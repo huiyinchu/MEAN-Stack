@@ -1,0 +1,11 @@
+<% include header.html %>
+
+<h1>Cars</h1>
+<ul id="cars">
+  <% cars.forEach(function(car){ %>
+    <li><%= car.make %></li>
+    <a href=<%=car.website%>><%= car.website %></a>
+  <% }) %>
+</ul>
+
+<% include footer.html %>
