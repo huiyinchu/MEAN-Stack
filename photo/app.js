@@ -5,10 +5,11 @@
 
 var express = require('express');
 //var routes = require('./routes');
-var photos = require('./routes/photos');
+var photo = require('./routes/photos');
 //var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+
 
 var app = express();
 
@@ -21,6 +22,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.bodyParser({uploadDir:__dirname + '/public/photos'}));
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -30,10 +32,10 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', photos.list);
-app.get('/upload', photos.form);
-app.get('/upload', photos.submit(app.get('photos')));
-app.get('/photo/:id/download', photos.download(app.get('photos')));
+app.get('/', photo.list);
+app.get('/upload', photo.form);
+app.post('/upload', photo.submit(app.get('photos')));
+app.get('/photo/:id/download', photo.download(app.get('photos')));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
